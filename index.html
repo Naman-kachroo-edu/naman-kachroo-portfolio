@@ -173,7 +173,18 @@ h1,h2,h3{font-family:var(--head);font-weight:400;line-height:1.05;text-wrap:bala
 .badges{display:grid;gap:.5rem}
 .badges li{display:grid;grid-template-columns:6.6rem 1fr;gap:.6rem;align-items:center;padding:.45rem .6rem;background:var(--lav);box-shadow:inset 0 0 0 2px var(--ink);font-size:.95rem}
 .badges b{font:400 1.1rem/1.1 var(--px)}
-.edu{margin-top:.6rem}
+.edu{list-style:none;padding:0;margin-top:.5rem}
+.edu li{display:flex;justify-content:space-between;gap:.8rem;align-items:baseline;padding:.45rem 0;border-bottom:2px dashed #d8d2c6}
+.edu li span{font-size:.9rem;color:var(--ink-2);white-space:nowrap}
+.roll{margin-top:.7rem}
+.roll .badges{margin-top:0;min-height:7.6rem;align-content:start}
+.roll .badges li.out{display:none}
+.roll .badges li.in{animation:roll .45s steps(5) both}
+.roll .badges li.in+li.in{animation-delay:.08s}
+@keyframes roll{from{transform:translateY(60%);opacity:0}}
+.roll-ctl{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-top:.6rem;font:400 1.05rem/1 var(--px);font-variant-numeric:tabular-nums}
+.roll-ctl button{font:400 1rem/1 var(--px);background:var(--white);border:0;box-shadow:inset 0 0 0 2px var(--ink);min-width:44px;min-height:40px;cursor:pointer}
+.roll-ctl button:hover{background:var(--sun)}
 @media (max-width:760px){.tree{grid-template-columns:1fr}.xp li{grid-template-columns:1fr}.xp .when{grid-row:auto}}
 
 /* after the story */
@@ -411,15 +422,32 @@ dialog.guide::backdrop{background:transparent}
             <h3 class="gap">Also in the bag</h3>
             <ul class="bag"><li>SEO</li><li>Responsive Web Design</li><li>Wireframing</li><li>Prototyping</li><li>Usability Testing</li><li>User Research</li><li>Go-to-Market Strategy</li><li>Community Building</li><li>Unit Economics</li><li>Graphic Design</li><li>Motion Graphics</li><li>Content Writing</li></ul>
             <h3 class="gap">Education</h3>
-            <p class="edu"><b>Shiv Nadar University</b></p>
+            <ol class="edu">
+              <li><b>Shiv Nadar University</b><span>University</span></li>
+              <li><b>buildspace</b><span>Builder programme · 2024</span></li>
+              <li><b>The Millennium School, Noida 41</b><span>School</span></li>
+              <li><b>Father Agnel School</b><span>School</span></li>
+              <li><b>Clever Harvey</b><span>Junior MBA · 2020</span></li>
+            </ol>
             <h3 class="gap">Badges unlocked</h3>
-            <ul class="badges">
-              <li><b>Certification</b>Professional Diploma in Unit Economics Management</li>
-              <li><b>Nominee</b>Top 18 Under 18</li>
-              <li><b>Nominee</b>Young Genius Award</li>
-              <li><b>3×</b>LinkedIn Top Voice</li>
-              <li><b>Award</b>Studio Excellence Award</li>
-            </ul>
+            <div class="roll" id="roll" role="region" aria-roledescription="carousel" aria-label="Certificates and awards, most relevant first">
+              <ol class="badges" id="roll-list">
+                <li><b>Certification</b>Professional Diploma in Unit Economics Management</li>
+                <li><b>Nominee</b>Top 18 Under 18</li>
+                <li><b>Nominee</b>Young Genius Award</li>
+                <li><b>3×</b>LinkedIn Top Voice</li>
+                <li><b>Award</b>Studio Excellence Award</li>
+                <li><b>Award</b>High Appreciation Award</li>
+                <li><b>Certificate</b>Certificate of appreciation</li>
+                <li><b>Certificate</b>Certificates of participation (2)</li>
+                <li><b>Certificate</b>Certificate for theatre</li>
+              </ol>
+              <div class="roll-ctl">
+                <button type="button" id="roll-prev" aria-label="Previous two">◀</button>
+                <span id="roll-count" aria-live="polite">1–2 of 9</span>
+                <button type="button" id="roll-next" aria-label="Next two">▶</button>
+              </div>
+            </div>
             <div class="acts"><a class="pbtn go" href="https://naman-portfolio.framer.website" target="_blank" rel="noopener">See my portfolio ↗</a><a class="pbtn" href="https://www.linkedin.com/in/naman-kachroo/" target="_blank" rel="noopener">LinkedIn ↗</a></div>
           </div>
         </div>
@@ -732,6 +760,24 @@ dialog.guide::backdrop{background:transparent}
     const box = $('.title .h1'); let i = 0; box.innerHTML = box.textContent.split(' ').map(w => `<span class="w">${[...w].map(c => `<span class="lt" style="animation:drop .4s steps(4) ${i++ * .05 + .2}s both">${c}</span>`).join('')}</span>`).join(' ');
     const st = document.createElement('style'); st.textContent = '@keyframes drop{from{transform:translateY(-40px);opacity:0}}'; document.head.append(st);
   }
+
+  // ---- badges roll two at a time, most relevant first; pauses on hover/focus and when off screen ----
+  (() => {
+    const box = $('#roll'), items = $$('#roll-list li'), count = $('#roll-count'), per = 2, pages = Math.ceil(items.length / per);
+    let page = 0, timer, visible = false, held = false;
+    const show = (p, animate) => {
+      page = (p + pages) % pages;
+      items.forEach((li, i) => { const on = Math.floor(i / per) === page; li.classList.toggle('out', !on); li.classList.remove('in'); if (on && animate && !still) { void li.offsetWidth; li.classList.add('in'); } });
+      const a = page * per + 1, b = Math.min(items.length, a + per - 1); count.textContent = `${a}–${b} of ${items.length}`;
+    };
+    const tick = () => { clearInterval(timer); if (!still && visible && !held) timer = setInterval(() => show(page + 1, true), 3200); };
+    $('#roll-prev').addEventListener('click', () => { show(page - 1, true); tick(); });
+    $('#roll-next').addEventListener('click', () => { show(page + 1, true); tick(); });
+    ['pointerenter', 'focusin'].forEach(ev => box.addEventListener(ev, () => { held = true; tick(); }));
+    ['pointerleave', 'focusout'].forEach(ev => box.addEventListener(ev, () => { held = false; tick(); }));
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; tick(); }, { threshold: .4 }).observe(box);
+    show(0, false);
+  })();
 
   // ---- proof numbers count up once ----
   $$('.count').forEach(el => {
