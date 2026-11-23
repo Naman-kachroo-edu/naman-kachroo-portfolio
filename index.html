@@ -177,7 +177,13 @@ h1,h2,h3{font-family:var(--head);font-weight:400;line-height:1.05;text-wrap:bala
 .edu li{display:flex;justify-content:space-between;gap:.8rem;align-items:baseline;padding:.45rem 0;border-bottom:2px dashed #d8d2c6}
 .edu li span{font-size:.9rem;color:var(--ink-2);white-space:nowrap}
 .roll{margin-top:.7rem}
-.roll .badges{margin-top:0;min-height:7.6rem;align-content:start}
+.roll .badges{margin-top:0;min-height:9.4rem;align-content:start}
+.roll .badges li{grid-template-columns:7.4rem 1fr;align-items:start}
+.roll .badges span{font-weight:700;line-height:1.35}
+.roll .badges small{display:block;font-weight:400;font-size:.82rem;color:var(--ink-2);margin-top:.2rem;overflow-wrap:anywhere}
+.verify{display:inline-block;margin-top:.6rem;font:400 1.05rem/1.2 var(--px)}
+.honours{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.7rem}
+.honours li{font-size:.92rem;padding:.3rem .6rem;background:var(--lav);box-shadow:inset 0 0 0 2px var(--ink)}
 .roll .badges li.out{display:none}
 .roll .badges li.in{animation:roll .45s steps(5) both}
 .roll .badges li.in+li.in{animation-delay:.08s}
@@ -429,25 +435,25 @@ dialog.guide::backdrop{background:transparent}
               <li><b>Father Agnel School</b><span>School</span></li>
               <li><b>Clever Harvey</b><span>Junior MBA · 2020</span></li>
             </ol>
-            <h3 class="gap">Badges unlocked</h3>
-            <div class="roll" id="roll" role="region" aria-roledescription="carousel" aria-label="Certificates and awards, most relevant first">
+            <h3 class="gap">Certifications</h3>
+            <div class="roll" id="roll" role="region" aria-roledescription="carousel" aria-label="Company certifications, most relevant first">
               <ol class="badges" id="roll-list">
-                <li><b>Certification</b>Professional Diploma in Unit Economics Management</li>
-                <li><b>Nominee</b>Top 18 Under 18</li>
-                <li><b>Nominee</b>Young Genius Award</li>
-                <li><b>3×</b>LinkedIn Top Voice</li>
-                <li><b>Award</b>Studio Excellence Award</li>
-                <li><b>Award</b>High Appreciation Award</li>
-                <li><b>Certificate</b>Certificate of appreciation</li>
-                <li><b>Certificate</b>Certificates of participation (2)</li>
-                <li><b>Certificate</b>Certificate for theatre</li>
+                <li><b>Google</b><span>Introduction to Generative AI<small>Jan 2025 · Credential ID 13683806</small></span></li>
+                <li><b>Forage × Accenture</b><span>Accenture Nordics Consultant Job Simulation<small>Jul 2024 · Credential ID kXY3dGYaDcmDGWe4T</small></span></li>
+                <li><b>HP</b><span>Data Science<small>Aug 2025</small></span></li>
+                <li><b>Udemy</b><span>How Websites Work<small>Mar 2024 · Credential ID UC-d404c9cf-d90d-4e83-8b07-b1855661c411</small></span></li>
+                <li><b>Forage × Bloomberg</b><span>Bloomberg Client Engagement Job Simulation<small>Jul 2024 · Credential ID t3ACGfmrPNKqQhChb</small></span></li>
+                <li><b>Sociosip</b><span>Marketing Strategies Webinar<small>Jun 2024</small></span></li>
               </ol>
               <div class="roll-ctl">
                 <button type="button" id="roll-prev" aria-label="Previous two">◀</button>
-                <span id="roll-count" aria-live="polite">1–2 of 9</span>
+                <span id="roll-count" aria-live="polite">1–2 of 6</span>
                 <button type="button" id="roll-next" aria-label="Next two">▶</button>
               </div>
+              <a class="verify" href="https://www.linkedin.com/in/naman-kachroo/details/certifications/" target="_blank" rel="noopener">Verify on LinkedIn ↗</a>
             </div>
+            <h3 class="gap">Honours</h3>
+            <ul class="honours"><li>Top 18 Under 18 · nominee</li><li>Young Genius Award · nominee</li><li>LinkedIn Top Voice ×3</li><li>Studio Excellence Award</li></ul>
             <div class="acts"><a class="pbtn go" href="https://naman-portfolio.framer.website" target="_blank" rel="noopener">See my portfolio ↗</a><a class="pbtn" href="https://www.linkedin.com/in/naman-kachroo/" target="_blank" rel="noopener">LinkedIn ↗</a></div>
           </div>
         </div>
