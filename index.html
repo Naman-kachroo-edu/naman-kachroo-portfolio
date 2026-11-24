@@ -10,24 +10,23 @@
 <meta property="og:title" content="Naman Kachroo · Founder of Thryve">
 <meta property="og:description" content="19, building Thryve: the proof-of-work career network for India's 18–22-year-olds.">
 <meta name="twitter:card" content="summary">
-<link rel="preload" href="assets/silkscreen-bold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/pressstart.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/jersey.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/atkinson.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* VOICE: a founder's story told like a pixel adventure; warm, honest, a little playful.
    IDEA: one day in the city: the story starts at midnight with a headline and ends the next night with "Player 2, press start".
    PICTURE: a pinned stage: a WebGL sky that moves through the day as you scroll, a two-layer city, and Naman walking the street.
-   COLOUR and TYPE: night navy, dawn rose, day blue, golden hour into Thryve orange; Silkscreen for the title, Jersey 10, Atkinson Hyperlegible.
+   COLOUR and TYPE: night navy, dawn rose, day blue, golden hour into Thryve orange; Press Start 2P for the title, Jersey 10, Atkinson Hyperlegible.
    LAYOUT: chapters scroll over the stage in pixel dialog boxes, leaving the street visible below. */
-@font-face{font-family:"Silkscreen";src:url(assets/silkscreen.woff2) format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:"Silkscreen";src:url(assets/silkscreen-bold.woff2) format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:"Press Start 2P";src:url(assets/pressstart.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Jersey";src:url(assets/jersey.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Atkinson";src:url(assets/atkinson.woff2) format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:"Atkinson";src:url(assets/atkinson-bold.woff2) format("woff2");font-weight:700;font-display:swap}
 :root{
   --night:#0b1030; --paper:#fbf8f1; --white:#ffffff; --ink:#141414; --ink-2:#4a433d;
   --orange:#ff5b1a; --sun:#f6c348; --lav:#bcb4ec;
-  --px:"Jersey","Atkinson",sans-serif; --title:"Silkscreen",monospace; --head:"Jersey","Atkinson",sans-serif; --body:"Atkinson",system-ui,sans-serif;
+  --px:"Jersey","Atkinson",sans-serif; --title:"Press Start 2P",monospace; --head:"Jersey","Atkinson",sans-serif; --body:"Atkinson",system-ui,sans-serif;
   --edge:0 -4px 0 0 var(--ink),0 4px 0 0 var(--ink),-4px 0 0 0 var(--ink),4px 0 0 0 var(--ink);
 }
 *{box-sizing:border-box;margin:0;min-width:0}
@@ -57,7 +56,7 @@ h1,h2,h3{font-family:var(--head);font-weight:400;line-height:1.05;text-wrap:bala
 .bar>*{pointer-events:auto}
 .badge{display:flex;align-items:center;gap:.75rem;padding:.45rem .9rem .45rem .45rem;text-decoration:none}
 .badge img{width:44px;height:44px;box-shadow:0 0 0 2px var(--ink)}
-.badge b{display:block;font:400 1.18rem/1.1 var(--head)}
+.badge b{display:block;font:700 1rem/1.2 var(--body)}
 .badge span{display:block;font:400 1.06rem/1.2 var(--px);color:var(--ink-2)}
 .progress{display:flex;gap:4px;margin-left:auto;margin-right:.4rem;padding:.55rem .7rem;align-items:center}
 .progress a{width:14px;height:14px;background:#d8d2c6;box-shadow:0 0 0 2px var(--ink);position:relative}
@@ -103,7 +102,7 @@ h1,h2,h3{font-family:var(--head);font-weight:400;line-height:1.05;text-wrap:bala
 /* title */
 .title{min-height:100svh;padding:clamp(6rem,16svh,10rem) 1.25rem 38svh;display:flex;flex-direction:column;align-items:center;text-align:center}
 .title .w{display:inline-block;white-space:nowrap}
-.title h1{font:700 clamp(2.4rem,8.4vw,6.4rem)/1 var(--title);letter-spacing:.02em;color:var(--paper);
+.title h1{font:400 clamp(1.9rem,6.4vw,4.8rem)/1.15 var(--title);letter-spacing:.02em;color:var(--paper);
   text-shadow:2px 2px 0 #4b3f8f,4px 4px 0 #4b3f8f,6px 6px 0 #4b3f8f,8px 8px 0 #2b2462,10px 10px 0 #2b2462}
 .title .h1 .lt{display:inline-block}
 .title .sub{margin-top:2rem;font:400 clamp(1.32rem,2vw,1.61rem)/1.5 var(--px);color:var(--sun)}
@@ -160,7 +159,7 @@ h1,h2,h3{font-family:var(--head);font-weight:400;line-height:1.05;text-wrap:bala
   background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 2px,transparent 2px 4px)}
 .intro-screen[hidden]{display:none}
 .intro-screen .inner{display:grid;justify-items:center;gap:1.1rem;max-width:40rem}
-.intro-screen .welcome{font:700 clamp(2.4rem,9vw,5.2rem)/1 var(--title);letter-spacing:.02em;color:var(--paper);text-shadow:3px 3px 0 #4b3f8f,6px 6px 0 #2b2462;min-height:1em}
+.intro-screen .welcome{font:400 clamp(1.8rem,7vw,4rem)/1.1 var(--title);letter-spacing:.02em;color:var(--paper);text-shadow:3px 3px 0 #4b3f8f,6px 6px 0 #2b2462;min-height:1em}
 .intro-screen .say{font:400 clamp(1.3rem,3.4vw,1.9rem)/1.35 var(--px);min-height:2.7em;max-width:24ch}
 .intro-screen .say .cur{display:inline-block;width:.55em;height:1em;background:var(--sun);vertical-align:-.12em;margin-left:2px;animation:blink .7s steps(2,end) infinite}
 .rewind{display:flex;align-items:center;gap:1rem;font:400 1.25rem/1 var(--px);color:var(--sun);font-variant-numeric:tabular-nums;opacity:0;transition:opacity .2s steps(2)}
@@ -621,7 +620,7 @@ dialog.guide::backdrop{background:transparent}
     <p>Questions about these terms: <strong>namankachroo@hotmail.com</strong></p>
 
     <h3>Credits</h3>
-    <p>This site was designed and written with help from Claude, an AI assistant by Anthropic, using Naman's own material. The pixel art (portrait, walking character and city) is original, made for this site from Naman's own photos, and the sky is drawn live in WebGL. Layout inspired by pixel-style portfolios such as twandeniet.com; command menu and toast ideas inspired by Kokonut UI (MIT License), all rebuilt from scratch. The headline in Chapter 1 is quoted from Moneycontrol's report on Uday Kotak's remarks. Typefaces: Silkscreen (© The Silkscreen Project Authors), Jersey 10 (© The Soft Type Project Authors) and Atkinson Hyperlegible (© Braille Institute of America), all used under the SIL Open Font License 1.1.</p>
+    <p>This site was designed and written with help from Claude, an AI assistant by Anthropic, using Naman's own material. The pixel art (portrait, walking character and city) is original, made for this site from Naman's own photos, and the sky is drawn live in WebGL. Layout inspired by pixel-style portfolios such as twandeniet.com; command menu and toast ideas inspired by Kokonut UI (MIT License), all rebuilt from scratch. The headline in Chapter 1 is quoted from Moneycontrol's report on Uday Kotak's remarks. Typefaces: Press Start 2P (© The Press Start 2P Project Authors), Jersey 10 (© The Soft Type Project Authors) and Atkinson Hyperlegible (© Braille Institute of America), all used under the SIL Open Font License 1.1.</p>
   </div>
 </section>
 
