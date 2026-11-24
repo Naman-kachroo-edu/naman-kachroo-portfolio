@@ -155,6 +155,29 @@ h1,h2,h3{font-family:var(--head);font-weight:400;line-height:1.05;text-wrap:bala
   .bar .pbtn{padding:.7rem .8rem}.bar .pbtn kbd{display:none}
 }
 
+/* loading screen: welcome, then rewind to midnight */
+.intro-screen{position:fixed;inset:0;z-index:60;background:#070b24;color:var(--paper);display:grid;place-items:center;text-align:center;padding:1.5rem;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 2px,transparent 2px 4px)}
+.intro-screen[hidden]{display:none}
+.intro-screen .inner{display:grid;justify-items:center;gap:1.1rem;max-width:40rem}
+.intro-screen .welcome{font:700 clamp(2.4rem,9vw,5.2rem)/1 var(--title);letter-spacing:.02em;color:var(--paper);text-shadow:3px 3px 0 #4b3f8f,6px 6px 0 #2b2462;min-height:1em}
+.intro-screen .say{font:400 clamp(1.3rem,3.4vw,1.9rem)/1.35 var(--px);min-height:2.7em;max-width:24ch}
+.intro-screen .say .cur{display:inline-block;width:.55em;height:1em;background:var(--sun);vertical-align:-.12em;margin-left:2px;animation:blink .7s steps(2,end) infinite}
+.rewind{display:flex;align-items:center;gap:1rem;font:400 1.25rem/1 var(--px);color:var(--sun);font-variant-numeric:tabular-nums;opacity:0;transition:opacity .2s steps(2)}
+.rewind.on{opacity:1}
+.rewind svg{width:64px;height:64px}
+.rewind .hand{transform-origin:16px 16px}
+.rewind.on .hand.m{animation:back .35s linear infinite}
+.rewind.on .hand.h{animation:back 2.1s linear infinite}
+@keyframes back{to{transform:rotate(-360deg)}}
+.intro-screen .skip-intro{position:absolute;right:max(1rem,env(safe-area-inset-right));bottom:max(1rem,env(safe-area-inset-bottom));font:400 1.1rem/1 var(--px);background:transparent;color:var(--paper);border:0;box-shadow:inset 0 0 0 2px var(--paper);padding:.7rem 1rem;min-height:44px;cursor:pointer}
+.intro-screen .skip-intro:hover{background:var(--paper);color:var(--ink)}
+.intro-screen.out{animation:iris .7s steps(10) forwards}
+@keyframes iris{from{clip-path:circle(75% at 50% 50%)}to{clip-path:circle(0% at 50% 50%)}}
+.intro-screen.fade{transition:opacity .3s;opacity:0}
+html.loading .title .lt{animation-play-state:paused}
+html.loading{overflow:hidden}
+
 /* skill tree */
 .ch.long .box{position:relative;top:auto}
 .tree{display:grid;grid-template-columns:1.25fr 1fr;gap:1.6rem;margin-top:1.2rem}
@@ -265,6 +288,19 @@ dialog.guide::backdrop{background:transparent}
 </style>
 </head>
 <body>
+<div class="intro-screen" id="intro" role="dialog" aria-modal="true" aria-label="Welcome" hidden>
+  <div class="inner">
+    <p class="welcome" id="i-welcome" aria-hidden="true"></p>
+    <p class="say" id="i-say" aria-live="polite"></p>
+    <div class="rewind" id="i-rewind" aria-hidden="true">
+      <svg viewBox="0 0 32 32" shape-rendering="crispEdges"><rect x="4" y="2" width="24" height="28" fill="#f6c348"/><rect x="2" y="4" width="28" height="24" fill="#f6c348"/><rect x="6" y="4" width="20" height="24" fill="#fbf8f1"/><rect x="4" y="6" width="24" height="20" fill="#fbf8f1"/>
+        <rect x="15" y="6" width="2" height="2" fill="#141414"/><rect x="15" y="24" width="2" height="2" fill="#141414"/><rect x="6" y="15" width="2" height="2" fill="#141414"/><rect x="24" y="15" width="2" height="2" fill="#141414"/>
+        <rect class="hand m" x="15" y="7" width="2" height="9" fill="#ff5b1a"/><rect class="hand h" x="15" y="15" width="6" height="2" fill="#141414"/><rect x="14" y="14" width="4" height="4" fill="#141414"/></svg>
+      <span>◀◀ <span id="i-time">Now</span></span>
+    </div>
+  </div>
+  <button class="skip-intro" type="button" id="i-skip">Skip ▶▶</button>
+</div>
 <a class="skip" href="#main">Skip to content</a>
 
 <div class="bar">
@@ -606,6 +642,39 @@ dialog.guide::backdrop{background:transparent}
 (() => {
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+
+  // ---- loading screen: once per visit; skippable; plain fade when motion is reduced ----
+  (() => {
+    const el = $('#intro'); let seen = false;
+    try { seen = sessionStorage.getItem('intro-seen') === '1'; } catch (e) {}
+    if (seen || location.hash.length > 1) return;
+    document.documentElement.classList.add('loading'); el.hidden = false;
+    const welcome = $('#i-welcome'), say = $('#i-say'), rew = $('#i-rewind'), tm = $('#i-time'), skip = $('#i-skip');
+    const timers = []; const later = (f, ms) => timers.push(setTimeout(f, ms));
+    let done = false;
+    const finish = () => {
+      if (done) return; done = true; timers.forEach(clearTimeout);
+      try { sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
+      el.classList.add(still ? 'fade' : 'out');
+      setTimeout(() => { el.hidden = true; document.documentElement.classList.remove('loading'); }, still ? 320 : 720);
+    };
+    skip.addEventListener('click', finish);
+    addEventListener('keydown', e => { if (!done && !el.hidden && (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); finish(); } });
+    el.addEventListener('click', e => { if (e.target !== skip) finish(); });
+    skip.focus({ preventScroll: true });
+    const line = "I'm Naman Kachroo. Hope you like it.";
+    if (still) { welcome.textContent = 'WELCOME,'; say.textContent = line; later(finish, 1600); return; }
+    const type = (node, text, speed, cb) => { let i = 0; const cur = document.createElement('span'); cur.className = 'cur';
+      const t = setInterval(() => { node.textContent = text.slice(0, ++i); node.append(cur); if (i >= text.length) { clearInterval(t); cb && cb(); } }, speed); timers.push(t); };
+    type(welcome, 'WELCOME,', 70, () => { welcome.querySelector('.cur')?.remove(); type(say, line, 32, () => {
+      // rewind: from the visitor's current time back to midnight, where the story starts
+      rew.classList.add('on'); const now = new Date(); let mins = now.getHours() * 60 + now.getMinutes(); const step = Math.max(1, Math.ceil(mins / 22));
+      const fmt = m => { const h = Math.floor(m / 60), mm = m % 60, h12 = (h % 12) || 12; return `${h12}:${String(mm).padStart(2, '0')} ${h < 12 ? 'AM' : 'PM'}`; };
+      tm.textContent = fmt(mins);
+      const r = setInterval(() => { mins = Math.max(0, mins - step); tm.textContent = fmt(mins); if (!mins) { clearInterval(r); say.textContent = 'Starting your journey…'; later(finish, 650); } }, 45); timers.push(r);
+    }); });
+    later(finish, 6000); // never hold anyone longer than this
+  })();
 
   // ---- toast with optional Undo ----
   const tEl = $('#toast'); let tt;
